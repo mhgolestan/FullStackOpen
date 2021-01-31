@@ -5,6 +5,16 @@ const Button = ({ onClick, text }) => {
   return <button onClick={onClick}>{text}</button>;
 };
 
+const Statistic = ({ text, value }) => {
+  return (
+    <div>
+      <p>
+        {text}: {value}
+      </p>
+    </div>
+  );
+};
+
 const Statistics = ({ good, bad, neutral, all }) => {
   if (all === 0) {
     return (
@@ -17,12 +27,18 @@ const Statistics = ({ good, bad, neutral, all }) => {
   return (
     <div>
       <h1>Statistics</h1>
-      <p>Good: {good}</p>
-      <p>Neutral: {neutral}</p>
-      <p>Bad: {bad}</p>
-      <p>All: {all}</p>
-      <p>Average: {isNaN((good - bad) / all) ? 0 : (good - bad) / all}</p>
-      <p>Positive: {isNaN((good / all) * 100) ? 0 : (good / all) * 100} %</p>
+      <Statistic text="Good" value={good} />
+      <Statistic text="neutral" value={neutral} />
+      <Statistic text="bad" value={bad} />
+      <Statistic text="all" value={all} />
+      <Statistic
+        text="Average"
+        value={isNaN((good - bad) / all) ? 0 : (good - bad) / all}
+      />
+      <Statistic
+        text="Positive"
+        value={isNaN((good / all) * 100) ? 0 : (good / all) * 100}
+      />
     </div>
   );
 };
