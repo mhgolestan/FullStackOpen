@@ -6,6 +6,14 @@ const Button = ({ onClick, text }) => {
 };
 
 const Statistics = ({ good, bad, neutral, all }) => {
+  if (all === 0) {
+    return (
+      <div>
+        <h1>Statistics</h1>
+        <p>No input</p>
+      </div>
+    );
+  }
   return (
     <div>
       <h1>Statistics</h1>
