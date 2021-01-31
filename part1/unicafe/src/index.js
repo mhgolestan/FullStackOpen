@@ -8,14 +8,27 @@ const Button = ({ onClick, text }) => {
 const Statistic = ({ text, value }) => {
   return (
     <div>
-      <p>
-        {text}: {value}
-      </p>
+      <table>
+        <tbody>
+          <tr>
+            <td>{text}:</td>
+            <td>{value}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   );
 };
 
 const Statistics = ({ good, bad, neutral, all }) => {
+  const average = isNaN((good - bad) / all)
+    ? 0
+    : ((good - bad) / all).toFixed(2);
+
+  const positive = isNaN((good / all) * 100)
+    ? 0
+    : ((good / all) * 100).toFixed(2);
+
   if (all === 0) {
     return (
       <div>
@@ -31,14 +44,8 @@ const Statistics = ({ good, bad, neutral, all }) => {
       <Statistic text="neutral" value={neutral} />
       <Statistic text="bad" value={bad} />
       <Statistic text="all" value={all} />
-      <Statistic
-        text="Average"
-        value={isNaN((good - bad) / all) ? 0 : (good - bad) / all}
-      />
-      <Statistic
-        text="Positive"
-        value={isNaN((good / all) * 100) ? 0 : (good / all) * 100}
-      />
+      <Statistic text="Average" value={average} />
+      <Statistic text="Positive" value={positive} />
     </div>
   );
 };
