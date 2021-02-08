@@ -8,9 +8,25 @@ const App = () => {
       number: "123",
       id: 1,
     },
+    {
+      name: "Alex Fredrik",
+      number: "12123",
+      id: 2,
+    },
+    {
+      name: "Mohammad",
+      number: "123",
+      id: 3,
+    },
+    {
+      name: "Ali",
+      number: "12123",
+      id: 4,
+    },
   ]);
   const [newName, setNewName] = useState("New name ...");
   const [newNumber, setNewNumber] = useState("New number ...");
+  const [filterNames, setFilterNames] = useState("");
 
   const addName = (event) => {
     event.preventDefault();
@@ -35,14 +51,30 @@ const App = () => {
   };
 
   const handleNumberChange = (event) => {
-    console.log(event.target.value);
     setNewNumber(event.target.value);
+  };
+
+  const personToShow =
+    filterNames === ""
+      ? persons
+      : persons.filter((person) => person.name.includes(filterNames));
+
+  console.log(personToShow);
+
+  const handleFilterNames = (event) => {
+    setFilterNames(event.target.value);
   };
 
   return (
     <div>
       <h2>Phonebook</h2>
 
+      <div>
+        Filter shown with
+        <input value={filterNames} onChange={handleFilterNames} />
+      </div>
+
+      <h2>Add new contact</h2>
       <form onSubmit={addName}>
         <div>
           name:
@@ -58,7 +90,7 @@ const App = () => {
 
       <h2>Numbers</h2>
       <ul>
-        {persons.map((person) => (
+        {personToShow.map((person) => (
           <Person key={person.id} name={person.name} number={person.number} />
         ))}
       </ul>
