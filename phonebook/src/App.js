@@ -2,20 +2,32 @@ import React, { useState } from "react";
 import Person from "./components/Person";
 
 const App = () => {
-  const [persons, setPersons] = useState([{ name: "Arto Hellas" }]);
+  const [persons, setPersons] = useState([
+    {
+      name: "Arto Hellas",
+      id: 1,
+    },
+  ]);
   const [newName, setNewName] = useState("New name ...");
 
   const addName = (event) => {
     event.preventDefault();
     const personObject = {
       name: newName,
+      id: persons.length + 1,
     };
-    setPersons(persons.concat(personObject));
-    setNewName("");
+
+    const checkName = (person) => person.name === personObject.name;
+    if (!persons.some(checkName)) {
+      setPersons(persons.concat(personObject));
+      setNewName("");
+    } else {
+      window.alert(`${personObject.name} exists`);
+    }
   };
 
   const handleNameChange = (event) => {
-    console.log(event.target.value);
+    // console.log(event.target.value);
     setNewName(event.target.value);
   };
 
@@ -35,11 +47,10 @@ const App = () => {
 
       <h2>Numbers</h2>
       <ul>
-        {persons.map((person, i) => (
-          <Person key={person.name} name={person.name} />
+        {persons.map((person) => (
+          <Person key={person.id} name={person.name} />
         ))}
       </ul>
-      <div>debug: {newName}</div>
     </div>
   );
 };
