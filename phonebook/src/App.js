@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import personService from "./services/persons";
 
 import Persons from "./components/Persons";
 import Filter from "./components/Filter";
@@ -12,8 +12,8 @@ const App = () => {
   const [filterNames, setFilterNames] = useState("");
 
   useEffect(() => {
-    axios.get("http://localhost:3001/persons").then((response) => {
-      setPersons(response.data);
+    personService.getAll().then((initialPersons) => {
+      setPersons(initialPersons);
     });
   }, []);
 
@@ -28,13 +28,11 @@ const App = () => {
 
     const checkName = (person) => person.name === personObject.name;
     if (!persons.some(checkName)) {
-      axios
-        .post("http://localhost:3001/persons", personObject)
-        .then((response) => {
-          setPersons(persons.concat(personObject));
-          setNewName("");
-          setNewNumber("");
-        });
+      personService.create(personObject).then((personObject) => {
+        setPersons(persons.concat(personObject));
+        setNewName("");
+        setNewNumber("");
+      });
     } else {
       window.alert(`${personObject.name} exists`);
     }
