@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+
 import Persons from "./components/Persons";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
@@ -18,6 +19,7 @@ const App = () => {
 
   const addName = (event) => {
     event.preventDefault();
+
     const personObject = {
       name: newName,
       number: newNumber,
@@ -26,9 +28,13 @@ const App = () => {
 
     const checkName = (person) => person.name === personObject.name;
     if (!persons.some(checkName)) {
-      setPersons(persons.concat(personObject));
-      setNewName("");
-      setNewNumber("");
+      axios
+        .post("http://localhost:3001/persons", personObject)
+        .then((response) => {
+          setPersons(persons.concat(personObject));
+          setNewName("");
+          setNewNumber("");
+        });
     } else {
       window.alert(`${personObject.name} exists`);
     }
