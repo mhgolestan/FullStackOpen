@@ -34,12 +34,13 @@ const App = () => {
     } else {
       const oldPersonId = persons.find(checkName).id;
       if (window.confirm(`${checkName.name} exists`)) {
-        axios
-          .put(`http://localhost:3001/persons/${oldPersonId}`, personObject)
-          .then((response) => {
+        personService
+          .edit(oldPersonId, personObject)
+          .then((editedPersonData) => {
+            console.log(editedPersonData);
             setPersons(
               persons.map((person) =>
-                person.id !== oldPersonId ? person : response.data
+                person.id !== oldPersonId ? person : editedPersonData
               )
             );
           });
