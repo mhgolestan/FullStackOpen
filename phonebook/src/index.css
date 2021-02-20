@@ -1,5 +1,14 @@
-.notif-class {
+.add-notif-class {
   color: green;
+  background: lightgrey;
+  font-size: 20px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+.error-notif-class {
+  color: red;
   background: lightgrey;
   font-size: 20px;
   border-style: solid;

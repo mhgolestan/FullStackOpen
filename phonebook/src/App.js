@@ -4,6 +4,9 @@ import personService from "./services/persons";
 import Person from "./components/Person";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
+// import AddNotification from "./components/AddNotification";
+// import ErrorNotification from "./components/ErrorNotification";
+
 import Notification from "./components/Notification";
 
 const App = () => {
@@ -11,7 +14,7 @@ const App = () => {
   const [newName, setNewName] = useState("New name ...");
   const [newNumber, setNewNumber] = useState("New number ...");
   const [filterNames, setFilterNames] = useState("");
-  const [notification, setNotification] = useState(null);
+  const [message, setMessage] = useState([{ text: "", type: "" }]);
 
   useEffect(() => {
     personService.getAll().then((initialPersons) => {
@@ -31,9 +34,12 @@ const App = () => {
         setPersons(persons.concat(personObject));
         setNewName("");
         setNewNumber("");
-        setNotification(`Added ${personObject.name}`);
+        setMessage({
+          text: `Added ${personObject.name}`,
+          type: "add",
+        });
         setTimeout(() => {
-          setNotification(null);
+          setMessage({ text: "", type: "" });
         }, 3000);
       });
     } else {
@@ -60,12 +66,24 @@ const App = () => {
     setNewNumber(event.target.value);
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = (id, name) => {
     if (window.confirm("Delete for real?")) {
-      personService.remove(id).then((response) => {
-        const remainedPersons = persons.filter((person) => person.id !== id);
-        setPersons(remainedPersons);
-      });
+      personService
+        .remove(id)
+        .then((response) => {
+          const remainedPersons = persons.filter((person) => person.id !== id);
+          setPersons(remainedPersons);
+        })
+        .catch((error) => {
+          setPersons(persons.filter((person) => person.id !== id));
+          setMessage({
+            text: `Information of '${name}' was already deleted from server`,
+            type: "error",
+          });
+          setTimeout(() => {
+            setMessage({ text: "", type: "" });
+          }, 3000);
+        });
     }
   };
 
@@ -78,10 +96,17 @@ const App = () => {
     setFilterNames(event.target.value);
   };
 
+  console.log(message.text);
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={notification} />
+
+      {/*<Notification
+        message={message}
+        className={
+          message.type === "add" ? "add-notif-class" : "error-notif-class"
+        }
+      />*/}
 
       <Filter filterNames={filterNames} handleFilterNames={handleFilterNames} />
 
@@ -100,7 +125,7 @@ const App = () => {
           id={person.id}
           name={person.name}
           number={person.number}
-          handleDelete={() => handleDelete(person.id)}
+          handleDelete={() => handleDelete(person.id, person.name)}
         />
       ))}
     </div>
