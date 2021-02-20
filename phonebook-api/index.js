@@ -2,6 +2,8 @@ const { request, response } = require("express");
 const express = require("express");
 const app = express();
 
+var fs = require("fs");
+
 let persons = [
   {
     name: "New name ...",
@@ -36,6 +38,16 @@ app.get("/", (request, response) => {
 
 app.get("/api/persons", (request, response) => {
   response.json(persons);
+});
+
+app.get("/api/info", (request, response) => {
+  const receivedDate = new Date();
+
+  response.send(
+    `Phonebook has info for ${persons.length} people 
+    
+    ${receivedDate}`
+  );
 });
 
 const PORT = 3001;
