@@ -4,10 +4,6 @@ import personService from "./services/persons";
 import Person from "./components/Person";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
-// import AddNotification from "./components/AddNotification";
-// import ErrorNotification from "./components/ErrorNotification";
-
-import Notification from "./components/Notification";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -96,7 +92,6 @@ const App = () => {
     setFilterNames(event.target.value);
   };
 
-  console.log(message.text);
   return (
     <div>
       <h2>Phonebook</h2>
@@ -122,6 +117,7 @@ const App = () => {
       <h2>Numbers</h2>
       {personToShow.map((person) => (
         <Person
+          key={person.id}
           id={person.id}
           name={person.name}
           number={person.number}

@@ -2,8 +2,11 @@ const { request, response } = require("express");
 const express = require("express");
 const app = express();
 const morgan = require("morgan");
+const cors = require("cors");
 
 app.use(express.json());
+app.use(cors());
+app.use(express.static("build"));
 
 morgan.token("body", (req, res) => JSON.stringify(req.body));
 app.use(
@@ -102,7 +105,7 @@ app.post("/api/persons", (request, response) => {
   response.json(person);
 });
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log("I can hear you");
 });
